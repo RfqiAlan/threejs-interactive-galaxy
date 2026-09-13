@@ -70,8 +70,15 @@
         /* ============================================
            GLOBAL STYLES
            ============================================ */
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            background: #000000;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        body {
             background: #000000;
             overflow: hidden;
             font-family: var(--font-primary);
@@ -1187,7 +1194,7 @@
         const countdownPanel = document.getElementById("countdownPanel");
         const countdownNumber = document.getElementById("countdownNumber");
 
-        const birthdayMessage = "Halo Sayangku Cintaku...\nSelamat ulang tahun ya!\nSemoga rezeki nya makin lancar dan yang di planingkan semua AAAAMIIIINNN.\nAku punya sesuatu yang spesial, khusus dibuat untukmu...";
+        const birthdayMessage = "Halo Sayangku Cintaku...\nSelamat ulang tahun ya!\nSemoga rezeki nya makin lancar dan yang di planingkan semua tercapai AAAAMIIIINNN.\nAku punya sesuatu yang spesial, khusus dibuat untukmu...";
 
         btnYes.addEventListener("click", () => {
             panel.style.display = "none";
@@ -1439,6 +1446,18 @@
         renderer.setPixelRatio(window.devicePixelRatio);
         // Giới hạn pixel ratio để giảm tải GPU trên desktop
         renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.domElement.style.position = 'fixed';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        renderer.domElement.style.width = '100vw';
+        renderer.domElement.style.height = '100vh';
+        renderer.domElement.style.zIndex = '10';
+        renderer.domElement.style.pointerEvents = 'none'; // Galaxy uses OrbitControls but wait, OrbitControls needs pointer events!
+        
+        // Actually, if OrbitControls needs pointer events, we must not set pointer-events: none!
+        // Wait, the original canvas had pointer-events: none! 
+        renderer.domElement.style.pointerEvents = 'auto'; 
+        
         document.body.appendChild(renderer.domElement);
 
         // === BLOOM SETUP ===
