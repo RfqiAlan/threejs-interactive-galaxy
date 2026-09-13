@@ -1132,6 +1132,7 @@
 
         document.getElementById("finalStartBtn").addEventListener("click", () => {
             const videoPanel = document.getElementById("videoPanel");
+            const galaxyHider = document.getElementById("galaxyHider");
             
             // Pause all videos when moving
             document.querySelectorAll('#videoPanel video').forEach(v => v.pause());
@@ -1141,9 +1142,11 @@
             if (introMusic) introMusic.pause();
             
             videoPanel.style.opacity = '0';
+            if (galaxyHider) galaxyHider.style.opacity = '0';
             
             setTimeout(() => {
                 videoPanel.style.display = 'none';
+                if (galaxyHider) galaxyHider.style.display = 'none';
                 
                 // Show questionPanel instead of going to galaxy
                 const questionPanel = document.getElementById("questionPanel");
@@ -1228,11 +1231,12 @@
                     countdownPanel.style.display = "none";
                     
                     const galaxyHider = document.getElementById("galaxyHider");
-                    if (galaxyHider) galaxyHider.style.display = 'none';
+                    if (galaxyHider) {
+                        galaxyHider.style.opacity = '0';
+                        galaxyHider.style.display = 'none';
+                    }
                     
-                    // Matikan lagu intro, mainkan lagu galaksi
-                    const introMusic = document.getElementById("introMusic");
-                    introMusic.pause();
+                    // Mainkan lagu galaksi
                     startMusic();
                     
                     // Otomatis mulai animasi dan musik tanpa perlu double-click
