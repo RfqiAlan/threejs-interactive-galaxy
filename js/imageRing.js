@@ -359,29 +359,13 @@ export class FlowerRingSystem {
 
     // 1) Load 1 gambar dulu agar ring & sprite tercipta
     textureLoader.load(
-        'assets/images/b1.png',
+        'assets/images/b1.jpg',
         (texture) => {
             this.processAndCreateFlowers(texture);
 
             // 2) Setelah sprite ada, preload banyak gambar lalu randomize material
-            this.preloadTextures([
-                'assets/images/b1.png',
-                'assets/images/b2.png',
-                'assets/images/b3.png',
-                'assets/images/b4.png',
-                'assets/images/b5.png',
-                'assets/images/b6.png',
-                'assets/images/b7.png',
-                'assets/images/b8.png',
-                'assets/images/b9.png',
-                'assets/images/b10.png',
-                'assets/images/b11.png',
-                'assets/images/b12.png',
-                'assets/images/b13.png',
-                'assets/images/b14.png',
-                'assets/images/b15.png'
-                // tambahkan path lain di sini, pastikan file-nya ada
-            ]);
+            const textureList = Array.from({length: 60}, (_, i) => `assets/images/b${i+1}.jpg`);
+            this.preloadTextures(textureList);
         },
         undefined,
         (error) => {
@@ -479,11 +463,12 @@ export class FlowerRingSystem {
             const imageWidth = texture.image.width || 80;
             const imageHeight = texture.image.height || 80;
             
-            canvas.width = imageWidth;
-            canvas.height = imageHeight;
+            const minSize = Math.min(imageWidth, imageHeight);
+            canvas.width = minSize;
+            canvas.height = minSize;
             
             try {
-                ctx.drawImage(texture.image, 0, 0);
+                this.drawImageWithOrientation(ctx, texture.image, 1, canvas.width, canvas.height);
             } catch (drawError) {
                 console.warn('⚠️ Error drawing image to canvas:', drawError);
                 // Fallback: vẽ hình tròn đơn giản
@@ -897,15 +882,36 @@ export class FlowerRingSystem {
                 // 1: no transform
                 break;
         }
-        ctx.drawImage(img, 0, 0, width, height);
+
+        const srcWidth = img.width;
+        const srcHeight = img.height;
+        let sx = 0, sy = 0, sWidth = srcWidth, sHeight = srcHeight;
+        
+        let targetRatio = width / height;
+        if (orientation >= 5 && orientation <= 8) {
+            targetRatio = height / width;
+        }
+
+        const srcRatio = srcWidth / srcHeight;
+
+        if (srcRatio > targetRatio) {
+            sWidth = srcHeight * targetRatio;
+            sx = (srcWidth - sWidth) / 2;
+        } else {
+            sHeight = srcWidth / targetRatio;
+            sy = (srcHeight - sHeight) / 2;
+        }
+
+        ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, width, height);
     }
 
     processAndUpdateTexture(texture) {
         try {
             const canvas = this.getCanvasFromPool();
             const ctx = canvas.getContext('2d');
-            canvas.width = texture.image.width;
-            canvas.height = texture.image.height;
+            const minSize = Math.min(texture.image.width || 80, texture.image.height || 80);
+            canvas.width = minSize;
+            canvas.height = minSize;
             const img = texture.image;
             
             // Đọc orientation từ EXIF
@@ -1006,8 +1012,9 @@ export class FlowerRingSystem {
                                     return;
                                 }
                                 
-                                canvas.width = texture.image.width || 80;
-                                canvas.height = texture.image.height || 80;
+                                const minSize = Math.min(texture.image.width || 80, texture.image.height || 80);
+                                canvas.width = minSize;
+                                canvas.height = minSize;
                                 
                                 const img = texture.image;
                                 let orientation = 1;
@@ -1331,8 +1338,9 @@ export class FlowerRingSystem {
                             // Xử lý canvas, EXIF, bo tròn góc như cũ
                             const canvas = this.getCanvasFromPool();
                             const ctx = canvas.getContext('2d');
-                            canvas.width = texture.image.width;
-                            canvas.height = texture.image.height;
+                            const minSize = Math.min(texture.image.width || 80, texture.image.height || 80);
+                            canvas.width = minSize;
+                            canvas.height = minSize;
                             const img = texture.image;
                             let orientation = 1;
                             if (img instanceof HTMLImageElement && img.src.startsWith('data:')) {
