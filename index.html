@@ -1007,8 +1007,13 @@
         </div>
     </div>
 
-    <!-- Backsound -->
-    <audio id="bgmusic" autoplay loop>
+    <!-- Sleep Well Intro Music -->
+    <audio id="introMusic" loop>
+        <source src="assets/images/sleep_well.webm" type="audio/webm">
+    </audio>
+
+    <!-- Galaxy Music -->
+    <audio id="bgmusic" loop>
         <source src="assets/images/music.mp3" type="audio/mpeg">
     </audio>
 
@@ -1058,6 +1063,10 @@
         updateCountdown();
         
         startJourneyBtn.addEventListener("click", () => {
+            const introMusic = document.getElementById("introMusic");
+            introMusic.currentTime = 30; // Mulai dari detik ke 30
+            introMusic.play().catch(e => console.log("Audio blocked", e));
+            
             welcomeDashboard.style.opacity = '0';
             setTimeout(() => {
                 welcomeDashboard.style.display = 'none';
@@ -1123,25 +1132,19 @@
 
         document.getElementById("finalStartBtn").addEventListener("click", () => {
             const videoPanel = document.getElementById("videoPanel");
-            const galaxyHider = document.getElementById("galaxyHider");
             
-            // Pause all videos when moving to galaxy
+            // Pause all videos when moving
             document.querySelectorAll('#videoPanel video').forEach(v => v.pause());
             
             videoPanel.style.opacity = '0';
-            if (galaxyHider) galaxyHider.style.opacity = '0';
             
             setTimeout(() => {
                 videoPanel.style.display = 'none';
-                if (galaxyHider) galaxyHider.style.display = 'none';
                 
-                // Masuk ke Galaxy
-                startMusic();
-                if (window.audioManager) window.audioManager.playOnly();
-                if (window.cameraController) window.cameraController.triggerAnimation();
-                
-                const gBtn = document.getElementById('galleryBtn');
-                if(gBtn) gBtn.style.display = 'flex';
+                // Show questionPanel instead of going to galaxy
+                const questionPanel = document.getElementById("questionPanel");
+                questionPanel.style.display = "flex";
+                questionPanel.style.opacity = "1";
             }, 1000);
         });
 
@@ -1219,6 +1222,14 @@
                 } else {
                     clearInterval(countdownInterval);
                     countdownPanel.style.display = "none";
+                    
+                    const galaxyHider = document.getElementById("galaxyHider");
+                    if (galaxyHider) galaxyHider.style.display = 'none';
+                    
+                    // Matikan lagu intro, mainkan lagu galaksi
+                    const introMusic = document.getElementById("introMusic");
+                    introMusic.pause();
+                    startMusic();
                     
                     // Otomatis mulai animasi dan musik tanpa perlu double-click
                     if (window.audioManager) window.audioManager.playOnly();
