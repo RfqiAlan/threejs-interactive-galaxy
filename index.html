@@ -1136,6 +1136,10 @@
             // Pause all videos when moving
             document.querySelectorAll('#videoPanel video').forEach(v => v.pause());
             
+            // Matikan lagu intro (Sleep Well)
+            const introMusic = document.getElementById("introMusic");
+            if (introMusic) introMusic.pause();
+            
             videoPanel.style.opacity = '0';
             
             setTimeout(() => {
