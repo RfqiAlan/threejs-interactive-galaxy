@@ -262,6 +262,7 @@
             z-index: 1000;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            pointer-events: none;
         }
 
         .panel-content {
@@ -278,6 +279,7 @@
             animation: panelAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
+            pointer-events: auto;
         }
 
         /* Decorative gradient border glow */
@@ -417,10 +419,12 @@
             justify-content: center;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            pointer-events: none;
         }
 
         .countdown-content {
             text-align: center;
+            pointer-events: auto;
         }
 
         #countdownNumber {
@@ -1183,7 +1187,7 @@
         const countdownPanel = document.getElementById("countdownPanel");
         const countdownNumber = document.getElementById("countdownNumber");
 
-        const birthdayMessage = "Halo Naurah Zahwa...\nSelamat ulang tahun ya!\nSemoga hari ini menjadi awal dari tahun yang luar biasa buat kamu.\nAku punya sesuatu yang spesial, khusus dibuat untukmu...";
+        const birthdayMessage = "Halo Sayangku Cintaku...\nSelamat ulang tahun ya!\nSemoga rezeki nya makin lancar dan yang di planingkan semua AAAAMIIIINNN.\nAku punya sesuatu yang spesial, khusus dibuat untukmu...";
 
         btnYes.addEventListener("click", () => {
             panel.style.display = "none";
@@ -1917,9 +1921,6 @@
             <div class="loading-message">Sabar yaa, planet nya lagi pup dulu 🚀</div>
         </div>
     </div>
-    <audio id="bg-audio" style="display:none"></audio>
-    <canvas id="canvas"
-        style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10;pointer-events:none;"></canvas>
     <script src="./js/meteors.js"></script>
     <script>
         // Event listener cho user profile đã được xử lý trong auth.js

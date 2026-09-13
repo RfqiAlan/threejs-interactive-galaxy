@@ -2020,6 +2020,7 @@ select#textAppearEffect {
     align-items: center;
     flex-direction: column;
     transition: opacity 1s ease-in-out, visibility 1s;
+    pointer-events: none;
 }
 
 .welcome-content {
@@ -2033,6 +2034,7 @@ select#textAppearEffect {
     box-shadow: 0 8px 32px rgba(255, 182, 193, 0.4);
     animation: slideUpFade 1.2s ease-out forwards;
     max-width: 90%;
+    pointer-events: auto;
 }
 
 .welcome-title {
